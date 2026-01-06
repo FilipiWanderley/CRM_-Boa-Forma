@@ -17,13 +17,37 @@ dist
 dist-ssr
 coverage
 
-# Local env files
+# Local env files - CRITICAL SECURITY
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 *.local
+
+# Database local files & dumps
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.dump
+dump.sql
+backups/
+
+# Uploads and User Data
+uploads/
+images/users/
+public/uploads/
+storage/
+tmp/
+temp/
+
+# Security keys
+*.pem
+*.key
+*.cert
+id_rsa
+id_rsa.pub
 
 # Editor directories and files
 .vscode/*
