@@ -1,0 +1,4 @@
+project_id = "gdhihqxybrcdvucsdwod"
+
+[functions.process-automations]
+verify_jwt = false
