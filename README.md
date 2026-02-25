@@ -110,6 +110,15 @@ Como o sistema utiliza autenticação segura via Supabase, não existem contas d
    - Lembre-se de substituir o email no script pelo email que você acabou de cadastrar.
 3. Atualize a página e você terá acesso total como **Gestor**.
 
+## 🎓 Acesso de Aluno (Para testes)
+
+Para cadastrar um usuário como **Aluno** e testar a interface do aluno:
+
+1. Cadastre-se na aplicação com o email desejado (ex: `moraes@gmail.com`).
+2. Execute o script `REGISTER_STUDENT.sql` no Supabase (SQL Editor).
+   - O script já está configurado para o email `moraes@gmail.com`, mas você pode alterá-lo.
+3. Ao logar, você verá o Dashboard do Aluno.
+
 ### 💰 Financeiro
 - Gestão de Planos e Matrículas.
 - Controle de Mensalidades e Faturas.
