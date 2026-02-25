@@ -61,7 +61,9 @@ export function useDashboardStats() {
       const lastMonthStart = startOfMonth(subMonths(now, 1));
       const lastMonthEnd = endOfMonth(subMonths(now, 1));
       
-      // Fetch all data in parallel
+      // O pulo do gato: Promise.all para disparar tudo de uma vez.
+      // Se fizesse await um por um (waterfall), o dashboard ia levar 5s pra carregar.
+      // Assim o banco resolve tudo em paralelo e o tempo total é a query mais lenta.
       const [
         leadsResult,
         subscriptionsResult,

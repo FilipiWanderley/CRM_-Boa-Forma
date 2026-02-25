@@ -120,6 +120,12 @@ export default function AuthPage() {
           description: 'E-mail ou senha incorretos.',
           variant: 'destructive',
         });
+      } else if (error.message.includes('Email not confirmed')) {
+        toast({
+          title: 'E-mail não confirmado',
+          description: 'Se você desativou a confirmação de e-mail recentemente, exclua este usuário no Supabase e cadastre-se novamente.',
+          variant: 'destructive',
+        });
       } else {
         toast({
           title: 'Erro ao entrar',

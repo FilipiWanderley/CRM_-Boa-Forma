@@ -24,7 +24,17 @@ import {
   AlertCircle,
   Loader2,
   User,
-  X
+  X,
+  Dumbbell,
+  Bike,
+  Music,
+  Flame,
+  Swords,
+  Waves,
+  HeartPulse,
+  Activity,
+  Brain,
+  Zap
 } from 'lucide-react';
 import { 
   useClassSessions, 
@@ -40,6 +50,22 @@ interface AulasColetinasProps {
   leadId?: string;
   unitId?: string;
 }
+
+const getClassIcon = (className: string | undefined) => {
+  const name = className?.toLowerCase() || '';
+  
+  if (name.includes('muscula') || name.includes('peso') || name.includes('força')) return <Dumbbell className="h-5 w-5" />;
+  if (name.includes('bike') || name.includes('spinning') || name.includes('cicli') || name.includes('rpm')) return <Bike className="h-5 w-5" />;
+  if (name.includes('yoga') || name.includes('pilates') || name.includes('flex') || name.includes('medit')) return <Brain className="h-5 w-5" />;
+  if (name.includes('zumba') || name.includes('dança') || name.includes('ritmo') || name.includes('ballet')) return <Music className="h-5 w-5" />;
+  if (name.includes('boxe') || name.includes('luta') || name.includes('muay') || name.includes('jiu') || name.includes('kick') || name.includes('combat')) return <Swords className="h-5 w-5" />;
+  if (name.includes('cross') || name.includes('funcional') || name.includes('hit') || name.includes('gap')) return <Flame className="h-5 w-5" />;
+  if (name.includes('natacao') || name.includes('hidro') || name.includes('piscina') || name.includes('aquati')) return <Waves className="h-5 w-5" />;
+  if (name.includes('cardio') || name.includes('corrida') || name.includes('esteira')) return <HeartPulse className="h-5 w-5" />;
+  if (name.includes('abdominal') || name.includes('core')) return <Zap className="h-5 w-5" />;
+  
+  return <Activity className="h-5 w-5" />;
+};
 
 export function AulasColetivas({ leadId, unitId }: AulasColetinasProps) {
   const { toast } = useToast();
@@ -253,6 +279,15 @@ export function AulasColetivas({ leadId, unitId }: AulasColetinasProps) {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
+                            <div 
+                              className="p-1.5 rounded-lg flex items-center justify-center"
+                              style={{ 
+                                backgroundColor: `${classColor}20`, 
+                                color: classColor 
+                              }}
+                            >
+                              {getClassIcon(session.class_type?.name)}
+                            </div>
                             <h4 className="font-bold text-foreground">
                               {session.class_type?.name}
                             </h4>

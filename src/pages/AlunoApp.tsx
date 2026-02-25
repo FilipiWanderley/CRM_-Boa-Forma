@@ -206,8 +206,13 @@ export default function AlunoApp() {
       // Update profile
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: urlWithCacheBuster })
-        .eq('user_id', user.id);
+        .upsert({ 
+          user_id: user.id,
+          avatar_url: urlWithCacheBuster,
+          full_name: profile?.full_name || user.email?.split('@')[0] || 'Aluno',
+          unit_id: profile?.unit_id || 'a0000000-0000-0000-0000-000000000001',
+          updated_at: new Date().toISOString()
+        });
 
       if (updateError) throw updateError;
 

@@ -27,6 +27,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, fullName: string, requestedRole?: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   hasRole: (role: 'gestor' | 'recepcao' | 'professor' | 'aluno') => boolean;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -108,6 +109,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
     
     if (!error && data.user) {
+      // Force fetch user data to ensure roles are up to date
+      await fetchUserData(data.user.id);
+
       // Log login activity after successful sign in
       setTimeout(() => {
         logActivity({
@@ -144,26 +148,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const currentUser = user;
     const currentProfile = profile;
     
-    // Log logout activity before signing out
-    if (currentUser) {
-      await logActivity({
-        entity_type: 'auth',
-        entity_id: currentUser.id,
-        action: 'logout',
-        description: `Usuário "${currentProfile?.full_name || currentUser.email}" fez logout`,
-        metadata: { email: currentUser.email },
-      });
+    try {
+      // Log logout activity before signing out
+      if (currentUser) {
+        try {
+          await logActivity({
+            entity_type: 'auth',
+            entity_id: currentUser.id,
+            action: 'logout',
+            description: `Usuário "${currentProfile?.full_name || currentUser.email}" fez logout`,
+            metadata: { email: currentUser.email },
+          });
+        } catch (logError) {
+          console.error('Error logging logout activity:', logError);
+        }
+      }
+      
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    } finally {
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      setRoles([]);
     }
-    
-    await supabase.auth.signOut();
-    setUser(null);
-    setSession(null);
-    setProfile(null);
-    setRoles([]);
   };
 
   const hasRole = (role: 'gestor' | 'recepcao' | 'professor' | 'aluno') => {
     return roles.some(r => r.role === role);
+  };
+
+  const refreshUser = async () => {
+    if (user) {
+      await fetchUserData(user.id);
+    }
   };
 
   return (
@@ -177,6 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUp,
       signOut,
       hasRole,
+      refreshUser,
     }}>
       {children}
     </AuthContext.Provider>

@@ -1,62 +1,158 @@
 # CRM Boa Forma
 
-Sistema completo de gestão para academias, estúdios e personal trainers. O CRM Boa Forma oferece ferramentas para gerenciamento de leads, alunos, treinos, avaliações físicas e financeiro.
+Sistema completo de gestão para academias, estúdios e personal trainers. O CRM Boa Forma oferece um conjunto robusto de ferramentas para gerenciamento de leads, alunos, treinos, avaliações físicas e financeiro, focado em otimizar a operação e melhorar a retenção de clientes.
 
-## Funcionalidades Principais
+## 🚀 Tecnologias Utilizadas
 
-- **Dashboard**: Visão geral de métricas, atividades recentes e atalhos rápidos.
-- **Gestão de Leads**: Pipeline de vendas, cadastro de leads e acompanhamento.
-- **Gestão de Alunos**: Controle de matrículas, avaliações físicas e histórico.
-- **Treinos e Exercícios**: Montagem de fichas de treino e banco de exercícios.
-- **Financeiro**: Controle de planos, mensalidades e relatórios.
-- **Automação**: Ferramentas para automatizar processos e comunicações.
-- **App do Aluno**: Área exclusiva para alunos visualizarem treinos e progresso.
+O projeto foi desenvolvido utilizando uma stack moderna, performática e escalável:
 
-## Tecnologias Utilizadas
+### Core
+- **React 18**: Biblioteca JavaScript para construção de interfaces.
+- **TypeScript 5**: Superset tipado do JavaScript para maior segurança e produtividade.
+- **Vite 5**: Build tool de próxima geração, extremamente rápida.
+- **PWA (Progressive Web App)**: Suporte para instalação como aplicativo nativo (`vite-plugin-pwa`).
 
-O projeto foi desenvolvido utilizando uma stack moderna e robusta:
+### Estilização e UI
+- **Tailwind CSS 3**: Framework CSS utility-first.
+- **Shadcn/ui & Radix UI**: Componentes de interface acessíveis e customizáveis.
+- **Lucide React**: Biblioteca de ícones moderna.
+- **Recharts**: Biblioteca para construção de gráficos e dashboards.
 
-- **Frontend**: React com TypeScript e Vite.
-- **UI Components**: Shadcn/ui e Tailwind CSS para estilização.
-- **Gerenciamento de Estado**: TanStack Query (React Query) para server state.
-- **Backend/Baas**: Integração com Supabase.
-- **Navegação**: React Router DOM.
-- **Formulários**: React Hook Form e Zod para validação.
+### Gerenciamento de Estado e Dados
+- **TanStack Query (React Query) v5**: Gerenciamento de estado assíncrono e cache de dados.
+- **React Router DOM v6**: Roteamento client-side.
 
-## Como Executar o Projeto
+### Formulários e Validação
+- **React Hook Form**: Gerenciamento de formulários performático.
+- **Zod**: Schema validation para TypeScript.
 
-Pré-requisitos: Node.js (versão 18 ou superior) e npm instalados.
+### Backend e Integrações
+- **Supabase**: Backend-as-a-Service (BaaS) que fornece:
+  - Banco de dados PostgreSQL.
+  - Autenticação e Autorização (RLS).
+  - Storage para arquivos.
+  - Edge Functions.
 
-1. **Instale as dependências**
+### Utilitários
+- **date-fns**: Manipulação de datas.
+- **xlsx**: Exportação de dados para Excel.
+- **jspdf**: Geração de documentos PDF.
 
+---
+
+## 🏗️ Arquitetura do Projeto
+
+O projeto segue uma arquitetura modular baseada em funcionalidades (Feature-Sliced Design simplificado), onde os componentes e lógicas são agrupados pelo domínio do negócio.
+
+### Estrutura de Pastas
+
+```
+CRM/
+├── public/              # Arquivos estáticos (favicons, robots.txt)
+├── src/
+│   ├── assets/          # Imagens e recursos estáticos do projeto
+│   ├── components/      # Componentes React organizados por domínio
+│   │   ├── aluno/       # Funcionalidades do aluno (Treinos, Check-in)
+│   │   ├── assessments/ # Avaliações físicas e anamnese
+│   │   ├── financial/   # Gestão financeira (Planos, Faturas)
+│   │   ├── leads/       # Gestão de leads e pipeline
+│   │   ├── ui/          # Componentes de UI genéricos (Botões, Inputs)
+│   │   └── ...          # Outros módulos (chat, classes, goals, etc.)
+│   ├── hooks/           # Custom Hooks para lógica de negócios e data fetching
+│   ├── integrations/    # Configuração de serviços externos (Supabase)
+│   ├── lib/             # Utilitários globais e helpers (formatação, cálculos)
+│   ├── pages/           # Páginas da aplicação (Roteamento)
+│   ├── App.tsx          # Componente raiz e configuração de rotas
+│   └── main.tsx         # Ponto de entrada da aplicação
+├── supabase/            # Arquivos relacionados ao backend
+│   ├── functions/       # Edge Functions
+│   └── migrations/      # Migrações do banco de dados SQL
+└── ...arquivos de configuração (vite.config.ts, tailwind.config.ts, etc.)
+```
+
+### Padrões Adotados
+
+- **Componentes**: Componentes funcionais com Hooks.
+- **Data Fetching**: Custom hooks encapsulando o `useQuery` e `useMutation` do TanStack Query (ex: `useLeads`, `useFinancial`).
+- **Path Alias**: Uso de `@/` para importar arquivos a partir da pasta `src/`.
+
+---
+
+## ✨ Funcionalidades Principais
+
+### 📊 Dashboards
+Visões personalizadas para diferentes perfis de usuário:
+- **Gestor**: Visão macro do negócio, financeiro e conversão.
+- **Professor**: Agenda de aulas, alunos e avaliações.
+- **Recepção**: Check-ins rápidos, aniversariantes e tarefas.
+- **Aluno**: Progresso, treinos e histórico.
+
+### 🤝 Gestão de Leads (CRM)
+- Pipeline de vendas visual (Kanban).
+- Histórico de interações.
+- Importação/Exportação de leads.
+- Ações rápidas de contato (WhatsApp).
+
+### 🏋️ Gestão Técnica
+- **Treinos**: Montagem de fichas, banco de exercícios e histórico de execuções.
+- **Aulas Coletivas**: Grade de horários, gestão de capacidade e check-ins.
+- **Avaliações**: Avaliação física completa, anamnese e gráficos de evolução.
+
+### 💰 Financeiro
+- Gestão de Planos e Matrículas.
+- Controle de Mensalidades e Faturas.
+- Relatórios de inadimplência.
+
+### 🤖 Automação e Engajamento
+- Regras de automação para tarefas e comunicações.
+- Sistema de Chat interno.
+- Pesquisas de NPS (Net Promoter Score).
+
+---
+
+## 🛠️ Como Executar Localmente
+
+### Pré-requisitos
+- Node.js (v18+)
+- npm ou bun
+
+### Passo a Passo
+
+1. **Clone o repositório**
    ```bash
-   npm install
+   git clone <url-do-repositorio>
+   cd CRM
    ```
 
-2. **Inicie o servidor de desenvolvimento**
+2. **Instale as dependências**
+   ```bash
+   npm install
+   # ou
+   bun install
+   ```
 
+3. **Configure as Variáveis de Ambiente**
+   Crie um arquivo `.env` na raiz do projeto com as credenciais do Supabase:
+   ```env
+   VITE_SUPABASE_URL=sua_url_do_supabase
+   VITE_SUPABASE_ANON_KEY=sua_chave_anonima
+   ```
+
+4. **Execute o servidor de desenvolvimento**
    ```bash
    npm run dev
    ```
+   Acesse `http://localhost:8080` no seu navegador.
 
-   O aplicativo estará disponível em `http://localhost:8080`.
+### Scripts Disponíveis
 
-3. **Build para Produção**
+- `npm run dev`: Inicia o servidor de desenvolvimento.
+- `npm run build`: Gera o build de produção.
+- `npm run lint`: Executa a verificação de código (ESLint).
+- `npm run preview`: Visualiza o build de produção localmente.
 
-   Para gerar a versão otimizada para produção:
+---
 
-   ```bash
-   npm run build
-   ```
+## 📄 Licença
 
-## Estrutura do Projeto
-
-- `src/components`: Componentes reutilizáveis da interface.
-- `src/pages`: Páginas da aplicação mapeadas nas rotas.
-- `src/hooks`: Custom hooks para lógica compartilhada.
-- `src/lib`: Utilitários e configurações de bibliotecas.
-- `src/integrations`: Integrações com serviços externos (ex: Supabase).
-
-## Licença
-
-Este projeto é proprietário e confidencial.
+Este projeto é proprietário e confidencial. Todos os direitos reservados.

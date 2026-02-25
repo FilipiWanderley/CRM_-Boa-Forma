@@ -33,7 +33,10 @@ import {
   ChevronUp,
   Filter,
   X,
-  Download
+  Download,
+  Footprints,
+  Zap,
+  HeartPulse
 } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import { format, startOfDay, isWithinInterval, subDays, subMonths, startOfMonth, endOfMonth } from 'date-fns';
@@ -47,6 +50,17 @@ interface WorkoutHistoryProps {
   leadId: string | undefined;
   unitId?: string;
 }
+
+const getMuscleIcon = (muscleGroup: string | null) => {
+  if (!muscleGroup) return <Dumbbell className="h-4 w-4 text-muted-foreground" />;
+  
+  const group = muscleGroup.toLowerCase();
+  if (group.includes('perna') || group.includes('gluteo') || group.includes('panturrilha')) return <Footprints className="h-4 w-4 text-orange-500" />;
+  if (group.includes('abd')) return <Zap className="h-4 w-4 text-yellow-500" />;
+  if (group.includes('cardio') || group.includes('esteira')) return <HeartPulse className="h-4 w-4 text-pink-500" />;
+  
+  return <Dumbbell className="h-4 w-4 text-primary" />;
+};
 
 interface GroupedLog {
   date: Date;
@@ -637,7 +651,10 @@ export function WorkoutHistory({ leadId, unitId }: WorkoutHistoryProps) {
                           {group.logs.map((log) => (
                             <TableRow key={log.id}>
                               <TableCell className="font-medium">
-                                {log.exerciseName}
+                                <div className="flex items-center gap-2">
+                                  {getMuscleIcon(log.muscleGroup)}
+                                  <span>{log.exerciseName}</span>
+                                </div>
                               </TableCell>
                               <TableCell className="text-center">
                                 {log.setsCompleted || '--'}

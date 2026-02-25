@@ -14,7 +14,7 @@ import { AvatarUpload } from '@/components/profile/AvatarUpload';
 import { formatCPF, formatPhone, formatCEP, fetchAddressByCEP, validateCPF, validatePhone, validateEmail } from '@/lib/masks';
 
 export default function Profile() {
-  const { user, profile, roles } = useAuth();
+  const { user, profile, roles, refreshUser } = useAuth();
   const { toast } = useToast();
   
   const [loading, setLoading] = useState(false);
@@ -103,19 +103,24 @@ export default function Profile() {
 
     setLoading(true);
     try {
+      // Prepare update data
+      const updateData = {
+        user_id: user.id,
+        full_name: formData.full_name,
+        phone: formData.phone || null,
+        cpf: formData.cpf || null,
+        birth_date: formData.birth_date || null,
+        gender: formData.gender || null,
+        address: formData.address || null,
+        emergency_contact: formData.emergency_contact || null,
+        emergency_phone: formData.emergency_phone || null,
+        unit_id: profile?.unit_id || 'a0000000-0000-0000-0000-000000000001', // Fallback to default unit
+        updated_at: new Date().toISOString(),
+      };
+
       const { error } = await supabase
         .from('profiles')
-        .update({
-          full_name: formData.full_name,
-          phone: formData.phone || null,
-          cpf: formData.cpf || null,
-          birth_date: formData.birth_date || null,
-          gender: formData.gender || null,
-          address: formData.address || null,
-          emergency_contact: formData.emergency_contact || null,
-          emergency_phone: formData.emergency_phone || null,
-        })
-        .eq('user_id', user.id);
+        .upsert(updateData);
 
       if (error) throw error;
 
@@ -123,6 +128,11 @@ export default function Profile() {
         title: 'Perfil atualizado',
         description: 'Suas informações foram salvas com sucesso.',
       });
+      
+      // Refresh local data
+      fetchFullProfile();
+      // Refresh auth context
+      refreshUser();
     } catch (error: any) {
       toast({
         title: 'Erro ao atualizar perfil',
@@ -169,7 +179,11 @@ export default function Profile() {
                 userId={user.id}
                 currentAvatarUrl={avatarUrl}
                 fullName={formData.full_name}
-                onUploadComplete={(url) => setAvatarUrl(url)}
+                unitId={profile?.unit_id || 'a0000000-0000-0000-0000-000000000001'}
+                onUploadComplete={(url) => {
+                  setAvatarUrl(url);
+                  refreshUser();
+                }}
               />
             )}
             <div className="flex-1">

@@ -36,6 +36,7 @@ import {
   FileText,
   ScanLine,
   Search,
+  Dumbbell,
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -63,6 +64,7 @@ const navigation: NavItem[] = [
   { name: 'Meus Alunos', href: '/meus-alunos', icon: Users, roles: ['professor'] },
   { name: 'Avaliações', href: '/avaliacoes', icon: ClipboardList, roles: ['professor'] },
   { name: 'Relatórios', href: '/relatorios-professor', icon: BarChart3, roles: ['professor'] },
+  { name: 'Exercícios', href: '/exercises', icon: Dumbbell, roles: ['gestor', 'professor'] },
   { name: 'Treinos', href: '/workouts', icon: ClipboardList, roles: ['gestor', 'professor'] },
   { name: 'Agenda', href: '/scheduling', icon: CalendarDays, roles: ['gestor', 'recepcao', 'professor'] },
   { name: 'Chat', href: '/chat', icon: MessageCircle, roles: ['gestor', 'professor', 'aluno'] },
@@ -135,7 +137,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 space-y-1 px-3 py-4">
+          <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent">
             {navigation
               .filter((item) => {
                 // If no roles specified, show to everyone

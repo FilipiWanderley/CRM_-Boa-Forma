@@ -41,7 +41,8 @@ serve(async (req) => {
     
     console.log("Starting automation processing...");
 
-    // Get all active automation rules
+    // Buscamos apenas as regras ATIVAS para não desperdiçar processamento.
+    // Importante: Em escala, talvez seja melhor paginar isso aqui, mas por enquanto aguenta.
     const { data: rules, error: rulesError } = await supabase
       .from("automation_rules")
       .select("*")
@@ -67,6 +68,8 @@ serve(async (req) => {
       try {
         console.log(`Processing rule: ${rule.name} (${rule.type})`);
 
+        // Switch simples para distribuir a lógica.
+        // Se crescer muito, refatorar para Strategy Pattern.
         switch (rule.type) {
           case "welcome":
             results.welcome += await processWelcomeAutomation(supabase, rule);

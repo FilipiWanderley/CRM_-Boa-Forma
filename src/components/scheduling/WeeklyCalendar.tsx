@@ -52,11 +52,15 @@ export function WeeklyCalendar({ appointments, onDateSelect, selectedDate }: Wee
     return appointments.filter(a => a.scheduled_date === dateStr);
   };
 
+  // Lógica de posicionamento absoluto na grid.
+  // Convertemos horas/minutos em pixels (48px = 1 hora).
+  // Isso permite que o agendamento fique na posição visual exata do horário.
   const getAppointmentPosition = (appointment: Appointment) => {
     const [startHour, startMin] = appointment.start_time.split(':').map(Number);
     const [endHour, endMin] = appointment.end_time.split(':').map(Number);
     
-    const top = ((startHour - 6) * 60 + startMin) * (48 / 60); // 48px per hour
+    // O dia começa às 06:00, então subtraímos 6h para o offset inicial
+    const top = ((startHour - 6) * 60 + startMin) * (48 / 60); 
     const height = ((endHour - startHour) * 60 + (endMin - startMin)) * (48 / 60);
     
     return { top: Math.max(0, top), height: Math.max(24, height) };

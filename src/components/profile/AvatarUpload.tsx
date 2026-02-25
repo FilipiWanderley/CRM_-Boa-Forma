@@ -10,10 +10,11 @@ interface AvatarUploadProps {
   userId: string;
   currentAvatarUrl: string | null;
   fullName: string;
+  unitId: string;
   onUploadComplete: (url: string) => void;
 }
 
-export function AvatarUpload({ userId, currentAvatarUrl, fullName, onUploadComplete }: AvatarUploadProps) {
+export function AvatarUpload({ userId, currentAvatarUrl, fullName, unitId, onUploadComplete }: AvatarUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -86,8 +87,12 @@ export function AvatarUpload({ userId, currentAvatarUrl, fullName, onUploadCompl
       // Update profile
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: urlWithCacheBuster })
-        .eq('user_id', userId);
+        .upsert({ 
+          user_id: userId,
+          avatar_url: urlWithCacheBuster,
+          full_name: fullName,
+          unit_id: unitId
+        });
 
       if (updateError) throw updateError;
 
