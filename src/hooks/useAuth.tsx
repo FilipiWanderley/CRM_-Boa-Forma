@@ -68,9 +68,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setLoading(false);
       }
+    }).catch((error) => {
+      console.error('Error getting session:', error);
+      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Safety timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      setLoading((prevLoading) => {
+        if (prevLoading) {
+          console.warn('Auth loading timed out, forcing completion');
+          return false;
+        }
+        return prevLoading;
+      });
+    }, 5000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   async function fetchUserData(userId: string) {

@@ -96,11 +96,42 @@ Visões personalizadas para diferentes perfis de usuário:
 ### 🏋️ Gestão Técnica
 - **Treinos**: Montagem de fichas, banco de exercícios e histórico de execuções.
 - **Aulas Coletivas**: Grade de horários, gestão de capacidade e check-ins.
-- **Avaliações**: Avaliação física completa, anamnese e gráficos de evolução.
+### Avaliações
+- Avaliação física completa, anamnese e gráficos de evolução.
+
+---
+
+## 🔑 Acesso Administrativo (Primeiro Acesso)
+
+Como o sistema utiliza autenticação segura via Supabase, não existem contas de administrador "padrão" hardcoded. Para criar o primeiro acesso administrativo:
+
+1. Acesse a aplicação e faça o **Cadastro** de um novo usuário.
+2. No painel do Supabase (SQL Editor), execute o script `PROMOTE_TO_ADMIN.sql` que está na raiz do projeto.
+   - Lembre-se de substituir o email no script pelo email que você acabou de cadastrar.
+3. Atualize a página e você terá acesso total como **Gestor**.
 
 ### 💰 Financeiro
 - Gestão de Planos e Matrículas.
 - Controle de Mensalidades e Faturas.
+  - Relatórios de inadimplência.
+
+---
+
+## 🚀 Como fazer Deploy na Vercel
+
+Este projeto está pronto para ser hospedado na Vercel. Siga os passos abaixo:
+
+1.  Faça um **Fork** ou envie este código para o seu repositório GitHub.
+2.  Crie uma conta na [Vercel](https://vercel.com) (pode usar sua conta GitHub).
+3.  No painel da Vercel, clique em **"Add New..."** -> **"Project"**.
+4.  Importe o repositório do projeto.
+5.  Na configuração do projeto (**Configure Project**), expanda a seção **Environment Variables** e adicione as variáveis do Supabase (as mesmas do arquivo `.env` ou `.env.example`):
+    - `VITE_SUPABASE_URL`: Sua URL do Supabase.
+    - `VITE_SUPABASE_PUBLISHABLE_KEY`: Sua chave pública (anon) do Supabase.
+6.  Clique em **Deploy**.
+7.  A Vercel irá construir o projeto e gerar uma URL para acesso público.
+
+**Nota:** O arquivo `vercel.json` incluído na raiz já configura as regras de reescrita (rewrites) necessárias para o roteamento do React (SPA) funcionar corretamente.
 - Relatórios de inadimplência.
 
 ### 🤖 Automação e Engajamento
