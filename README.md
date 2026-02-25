@@ -132,7 +132,6 @@ Este projeto está pronto para ser hospedado na Vercel. Siga os passos abaixo:
 7.  A Vercel irá construir o projeto e gerar uma URL para acesso público.
 
 **Nota:** O arquivo `vercel.json` incluído na raiz já configura as regras de reescrita (rewrites) necessárias para o roteamento do React (SPA) funcionar corretamente.
-- Relatórios de inadimplência.
 
 ### 🤖 Automação e Engajamento
 - Regras de automação para tarefas e comunicações.
